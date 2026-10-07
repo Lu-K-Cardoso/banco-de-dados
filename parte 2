@@ -1,0 +1,125 @@
+CREATE DATABASE IF NOT EXISTS dbLoja;
+SHOW DATABASES;
+USE dbloja;
+CREATE TABLE IF NOT EXISTS cliente (
+    idCliente INT NOT NULL AUTO_INCREMENT,
+    nome_usuario VARCHAR(15) NOT NULL,
+    e_mail_cliente VARCHAR(30) NOT NULL,
+    nome VARCHAR(30) NOT NULL,
+    telefone_residencial VARCHAR(11) NOT NULL,
+    telefone_celular VARCHAR(11) NOT NULL,
+    cpf varchar(11) NOT NULL,
+    telefone_comercial VARCHAR(11) NOT NULL,
+    PRIMARY KEY (idCliente)
+);
+CREATE TABLE IF NOT EXISTS funcionario(
+    idFuncionario INT NOT NULL AUTO_INCREMENT,
+    usuario VARCHAR(15) NOT NULL,
+    salario decimal(8,2) NOT NULL,
+    senha VARCHAR(10) NOT NULL,
+    PRIMARY KEY (idFuncionario)
+);
+CREATE TABLE IF NOT EXISTS forma_pagto(
+    idFrmPagto INT NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    taxa_juros DECIMAL(8,2) NOT NULL,
+    PRIMARY KEY (idFrmPagto)
+);
+CREATE TABLE IF NOT EXISTS imagens(
+    idImagem INT NOT NULL AUTO_INCREMENT,
+    imagem VARCHAR(255) NOT NULL,
+    PRIMARY KEY (idImagem)
+); 
+CREATE TABLE IF NOT EXISTS fabricante(
+    idFabricante INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(30) NOT NULL,
+    PRIMARY KEY(idFabricante)
+);
+CREATE TABLE IF NOT EXISTS categoria (
+    idCategoria INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(30) NOT NULL,
+    PRIMARY KEY (idCategoria)
+);
+CREATE TABLE IF NOT EXISTS endereco (
+    idEndereco INT NOT NULL AUTO_INCREMENT,
+    tipo VARCHAR(3) NOT NULL,
+    logradouro VARCHAR(30) NOT NULL,
+    bairro VARCHAR(20) NOT NULL,
+    cep varchar(7) NOT NULL,
+    cidade VARCHAR(30) NOT NULL,
+    uf VARCHAR(2) NOT NULL,
+    complemento VARCHAR(50) NOT NULL,
+    idcliente INT NOT NULL,
+    PRIMARY KEY (idEndereco),
+    CONSTRAINT fk_cliente_endereço
+    FOREIGN KEY (idcliente)
+    REFERENCES cliente (idcliente)
+);
+CREATE TABLE IF NOT EXISTS pedido (
+    Pedido_Codigo INT NOT NULL AUTO_INCREMENT,
+    data_hora DATETIME NOT NULL,
+    valor_frete DECIMAL(8,2) NOT NULL,
+    data_entrega_prevista DATETIME NOT NULL,
+    situacao VARCHAR(20) NOT NULL,
+    desconto DECIMAL(8,2) NOT NULL,
+    VLR_TOTAL DECIMAL(8,2) NOT NULL,
+    data_pagamento DATETIME NOT NULL,
+    data_validade DATETIME NOT NULL,
+    numero_NF INT NOT NULL,
+    data_emissao_NF DATETIME NOT NULL,
+    idCliente INT NOT NULL,
+    idEndereco INT NOT NULL,
+    idFuncionario INT NOT NULL, 
+    idFrmPagto INT NOT NULL,
+    PRIMARY KEY (Pedido_Codigo),
+    CONSTRAINT fk_Pedido_Cliente
+    FOREIGN KEY (iCliente)
+    REFERENCES cliente (idCliente),
+    CONSTRAINT fk_Pedido_Endereco
+    FOREIGN KEY (idEndereco)
+    REFERENCES endereco (idEndereco),
+    CONSTRAINT fk_pedido_funcionario
+    FOREIGN KEY (idFuncionario)
+    REFERENCES funcionario (idFuncionario),
+    CONSTRAINT fk_pedido_frmpagto
+    FOREIGN KEY (idFrmPagto)
+    REFERENCES forma_pagto (idFrmPagto)
+);
+CREATE TABLE IF NOT EXISTS produto (
+    idProduto INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(30) NOT NULL,
+    descricao VARCHAR(30) NOT NULL,
+    preco DECIMAL(8,2) NOT NULL,
+    quantidade INT NOT NULL,
+    idImagem INT NOT NULL,
+    idFabricante INT NOT NULL,
+    idCategoria INT NOT NULL,
+    PRIMARY KEY (idProduto),
+    CONSTRAINT fk_produto_imagem
+    FOREIGN KEY (idImagem)
+    REFERENCES imagens (idImagem),
+    CONSTRAINT fk_Produto_Fabricante
+    FOREIGN KEY (idFabricante)
+    REFERENCES fabricante (idFabricante),
+    CONSTRAINT fk_Produto_Categoria
+    FOREIGN KEY (idCategoria)
+    REFERENCES categoria (idCategoria)
+);
+CREATE TABLE IF NOT EXISTS item_pedido(
+    idItemPedido INT NOT NULL AUTO_INCREMENT,
+    quantidade_venda INT NOT NULL,
+    preco_venda DECIMAL(8,2) NOT NULL,
+    idproduto INT NOT NULL,
+    pedido_codigo INT NOT NULL,
+    PRIMARY KEY (idItemPedido),
+    CONSTRAINT fk_Produto_Pedido_Produto
+    FOREIGN KEY (idProduto)
+    REFERENCES produto (idProduto),
+    CONSTRAINT fk_Produto_Pedido_Pedido
+    FOREIGN KEY (Pedido_Codigo)
+    REFERENCES pedido (Pedido_Codigo)
+);
+
+
+
+
