@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS pedido (
     idFrmPagto INT NOT NULL,
     PRIMARY KEY (Pedido_Codigo),
     CONSTRAINT fk_Pedido_Cliente
-    FOREIGN KEY (iCliente)
+    FOREIGN KEY (idCliente)
     REFERENCES cliente (idCliente),
     CONSTRAINT fk_Pedido_Endereco
     FOREIGN KEY (idEndereco)
@@ -119,7 +119,8 @@ CREATE TABLE IF NOT EXISTS item_pedido(
     FOREIGN KEY (Pedido_Codigo)
     REFERENCES pedido (Pedido_Codigo)
 );
-
-
-
+ALTER TABLE cliente MODIFY nome VARCHAR(100) NOT NULL;
+ALTER TABLE cliente ADD COLUMN dtNasc DATE;
+ALTER TABLE cliente ADD COLUMN rg VARCHAR(9) NOT NULL AFTER cpf;
+ALTER TABLE cliente RENAME tblcliente;
 
