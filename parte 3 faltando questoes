@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS dbLoja;
 SHOW DATABASES;
-USE dbloja;
+USE dbLoja;
 CREATE TABLE IF NOT EXISTS cliente (
     idCliente INT NOT NULL AUTO_INCREMENT,
     nome_usuario VARCHAR(15) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS funcionario(
     PRIMARY KEY (idFuncionario)
 );
 CREATE TABLE IF NOT EXISTS forma_pagto(
-    idFrmPagto INT NOT NULL,
+    idFrmPagto INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(20) NOT NULL,
     taxa_juros DECIMAL(8,2) NOT NULL,
     PRIMARY KEY (idFrmPagto)
@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS pedido (
     CONSTRAINT fk_Pedido_Endereco
     FOREIGN KEY (idEndereco)
     REFERENCES endereco (idEndereco),
-    CONSTRAINT fk_pedido_funcionario
+    CONSTRAINT fk_pedido_Funcionario
     FOREIGN KEY (idFuncionario)
     REFERENCES funcionario (idFuncionario),
-    CONSTRAINT fk_pedido_frmpagto
+    CONSTRAINT fk_pedido_FrmPagto
     FOREIGN KEY (idFrmPagto)
     REFERENCES forma_pagto (idFrmPagto)
 );
@@ -123,4 +123,41 @@ ALTER TABLE cliente MODIFY nome VARCHAR(100) NOT NULL;
 ALTER TABLE cliente ADD COLUMN dtNasc DATE;
 ALTER TABLE cliente ADD COLUMN rg VARCHAR(9) NOT NULL AFTER cpf;
 ALTER TABLE cliente RENAME tblcliente;
+ALTER TABLE tblcliente RENAME cliente;
+CREATE TABLE  clone_cliente SELECT * FROM cliente;
+alter table clone_cliente drop rg;
+alter table clone_cliente drop dtnasc;
+drop table clone_cliente;
 
+insert into cliente(nome_usuario, e_mail_cliente, nome, telefone_residencial, telefone_celular, cpf, rg, telefone_comercial, dtnasc)
+values ('gumball', 'gumball@elmore.com', 'Gumball Watterson', '1234567890', '9876543210', '12345678901', '123456789', '1122334455', '2025-03-10');
+insert into cliente(nome_usuario, e_mail_cliente, nome, telefone_residencial, telefone_celular, cpf, rg, telefone_comercial, dtnasc)
+values ('darwin', 'darwin@elmore.com', 'Darwin Watterson', '2444666660', '6767676767', '42424242426', '101010101', '6767898967', '2010-03-19');
+select * from cliente;
+
+INSERT INTO endereco(tipo, logradouro, bairro, cep, cidade, uf, complemento, idcliente)
+VALUES ('RES', 'Rua Elmore', 'Centro', 1234567, 'Elmore', 'EL', 'Casa azul ao lado do parque', 1);
+select * from endereco;
+
+insert into funcionario(usuario, salario, senha)
+values('marcos', 3500, 'senha123');
+insert into forma_pagto(nome, taxa_juros)
+values('Cartao de debito', 2.5);
+
+INSERT INTO pedido (data_hora, valor_frete, data_entrega_prevista, situacao, desconto, vlr_total, data_pagamento, data_validade, numero_NF, data_emissao_NF, idCliente, idEndereco, idFuncionario, idFrmPagto)
+VALUES ('2025-02-15 14:30:00', 20.00, '2025-02-20 18:00:00', 'Confirmado', 5.00, 53.63,'2025-02-16 12:00:00', '2025-03-15 23:59:59', 12345, '2025-02-15 15:00:00', 1, 1, 1, 1);
+select * from pedido;
+
+insert into imagens(imagem) 
+values ('imagens/muffin.jpg');
+insert into fabricante(nome) 
+values ('Doces da Vovo');
+insert into categoria(nome) 
+values ('Doces');
+
+INSERT INTO produto (nome, descricao, preco, quantidade, idImagem, idfabricante, idcategoria)
+VALUES ('Muffin de Banana', 'Doce caseiro com canela', 5.99, 50, 1, 1, 1);
+select * from produto;
+
+INSERT INTO item_pedido (quantidade_venda, preco_venda, idproduto, pedido_codigo)
+VALUES (2, 5.99, 1, 4);
