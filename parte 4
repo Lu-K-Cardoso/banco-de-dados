@@ -160,7 +160,7 @@ VALUES ('Muffin de Banana', 'Doce caseiro com canela', 5.99, 50, 1, 1, 1);
 select * from produto;
 
 INSERT INTO item_pedido (quantidade_venda, preco_venda, idproduto, pedido_codigo)
-VALUES (2, 5.99, 1, 4);
+VALUES (2, 5.99, 1, 1);
 
 insert into cliente(nome_usuario, e_mail_cliente, nome, telefone_residencial, telefone_celular, cpf, rg, telefone_comercial, dtnasc)
 values ('anais', 'anais@elmore.com', 'Anais Watterson', '3344556677', '9977665544', '34567890123', '876543210', '6677889900', '2012-07-22');
@@ -239,13 +239,13 @@ values ('2025-03-04 16:45:00', 8.00, '2025-03-07 12:00:00', 'Confirmado', 1.50, 
 select * from pedido;
 
 insert into item_pedido(quantidade_venda, preco_venda, idproduto, pedido_codigo)
-values (10, 4.50, 2, 5);
+values (10, 4.50, 2, 2);
 insert into item_pedido(quantidade_venda, preco_venda, idproduto, pedido_codigo)
-values (12, 6.50, 3, 6);
+values (12, 6.50, 3, 3);
 insert into item_pedido(quantidade_venda, preco_venda, idproduto, pedido_codigo)
-values (5, 7.00, 4, 7);
+values (5, 7.00, 4, 4);
 insert into item_pedido(quantidade_venda, preco_venda, idproduto, pedido_codigo)
-values (30, 0.80, 5, 8);
+values (30, 0.80, 5, 5);
 select * from item_pedido;
 
 create table cp_Cliente like cliente;
@@ -255,3 +255,18 @@ describe cp_Cliente;
 
 create table bkp_Produto select * from produto;
 select * from bkp_Produto;
+
+select idFuncionario as `Codigo do Funcionario`, usuario as `Usuario`, salario as `Salario`, senha as `Senha`
+from funcionario;
+
+select count(*) as `Total de Produtos` from produto;
+
+select sum(preco) as `Soma dos Precos` from produto;
+
+select idCliente as `Codigo do Cliente`, nome as `Nome do Cliente`, cpf as `CPF do Cliente`, telefone_celular as `Telefone Cel.`
+from cliente
+order by nome;
+
+select * from produto
+where preco > 5
+order by nome;
