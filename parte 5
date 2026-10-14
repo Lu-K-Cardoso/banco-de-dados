@@ -270,3 +270,20 @@ order by nome;
 select * from produto
 where preco > 5
 order by nome;
+
+select usuario, salario from funcionario
+where salario between 1500 and 5000
+order by usuario asc;
+
+select * from endereco
+where cidade <> 'Itapetininga';
+
+select * from fabricante
+where idfabricante in (1, 3, 5)
+order by idfabricante desc;
+
+select * from produto
+where nome like '%a%';
+
+select * from cliente
+where nome like '%e_';
